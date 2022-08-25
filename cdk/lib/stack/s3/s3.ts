@@ -21,8 +21,8 @@ import {
 
 // Interfaces for s3
 export interface S3StackProps extends cdk.Stack {
-	WebsiteIndexDocument: string;
-	WebsiteErrorDocument: string;
+	websiteIndexDocument: string;
+	websiteErrorDocument: string;
 }
 
 // s3 initizlization
@@ -49,8 +49,8 @@ export class S3Stack extends cdk.Stack {
 		const websiteBucket = new s3.Bucket(this, "WebsiteBucket", {
 			bucketName: `aws-fullstack-template-website-${getRandomInt(1000000)}`,
 			removalPolicy: cdk.RemovalPolicy.DESTROY,
-			websiteIndexDocument: props.WebsiteIndexDocument,
-			websiteErrorDocument: props.WebsiteIndexDocument,
+			websiteIndexDocument: props.websiteIndexDocument,
+			websiteErrorDocument: props.websiteErrorDocument,
 		});
 
 		/* Pipleine Artifacts Bucket is used by CodePipeline during Builds */

@@ -7,10 +7,10 @@ import { S3Stack } from "../lib/stack/s3/s3";
 const app = new cdk.App();
 
 const props = {
-	ProjectName: "MyCdkGoals",
-	TableName: "CDKGoals",
-	WebsiteIndexDocument: "index.html",
-	WebsiteErrorDocument: "index.html",
+	projectName: "MyCdkGoals",
+	tableName: "CDKGoals",
+	websiteIndexDocument: "index.html",
+	websiteErrorDocument: "index.html",
 };
 
 const DatabaseAppStack = new DatabaseStack(app, "DatabaseAppStack", props);

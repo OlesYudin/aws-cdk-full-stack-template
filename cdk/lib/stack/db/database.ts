@@ -16,8 +16,8 @@ import * as dynamodb from "@aws-cdk/aws-dynamodb";
 
 // Interfaces for DynamoDB
 export interface DatabaseStackProps extends cdk.Stack {
-	ProjectName: string;
-	TableName: string;
+	projectName: string;
+	tableName: string;
 }
 
 // DynamoDB initizlization
@@ -29,7 +29,7 @@ export class DatabaseStack extends cdk.Stack {
 		//#region
 		/* Create DynamoDB Goals Table */
 		const goalsTable = new dynamodb.Table(this, "TGoals", {
-			tableName: `${props.ProjectName}-${props.TableName}`,
+			tableName: `${props.projectName}-${props.tableName}`,
 			partitionKey: { name: "userId", type: dynamodb.AttributeType.STRING },
 			sortKey: { name: "goalId", type: dynamodb.AttributeType.STRING },
 			readCapacity: 1,
