@@ -19,7 +19,7 @@ import {
 } from "@aws-cdk/aws-iam";
 
 // Interfaces for AWS Cognito
-export interface CognitoStackProps extends cdk.Stack {
+export interface CognitoStackProps extends cdk.StackProps {
 	org: string;
 	environment: string;
 	projectName: string;
