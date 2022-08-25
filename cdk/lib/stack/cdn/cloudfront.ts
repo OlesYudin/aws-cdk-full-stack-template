@@ -13,14 +13,19 @@ import s3 = require("@aws-cdk/aws-s3");
 import s3deploy = require("@aws-cdk/aws-s3-deployment");
 
 // Interfaces for CDN (CloudFront)
-export interface CDNStackProps extends cdk.Stack {
+export interface CDNStackProps extends cdk.StackProps {
 	websiteBucket: string;
 	websiteErrorDocument: string;
 }
 
 // Cloudfront CDN Distribution
 export class CDNStack extends cdk.Stack {
-	constructor(scope: cdk.Construct, id: string, props: CDNStackProps) {
+	constructor(
+		scope: cdk.Construct,
+		id: string,
+		websiteBucket: s3.Bucket,
+		props: CDNStackProps
+	) {
 		super(scope, id);
 
 		const assetsCdn = new CloudFrontWebDistribution(this, "AssetsCDN", {

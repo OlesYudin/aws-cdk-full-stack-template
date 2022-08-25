@@ -20,13 +20,17 @@ import {
 } from "@aws-cdk/aws-iam";
 
 // Interfaces for s3
-export interface S3StackProps extends cdk.Stack {
+export interface S3StackProps extends cdk.StackProps {
 	websiteIndexDocument: string;
 	websiteErrorDocument: string;
 }
 
 // s3 initizlization
 export class S3Stack extends cdk.Stack {
+	public readonly sourceAssetBucket: s3.Bucket;
+	public readonly websiteBucket: s3.Bucket;
+	public readonly pipelineArtifactsBucket: s3.Bucket;
+
 	constructor(scope: cdk.Construct, id: string, props: S3StackProps) {
 		super(scope, id);
 		const getRandomInt = (max: number) => {
@@ -36,7 +40,7 @@ export class S3Stack extends cdk.Stack {
 		/* S3 Objects */
 		//Todo - grant access to cloudfront user and uncomment block all
 		/* Assets Source Bucket will be used as a codebuild source for the react code */
-		const sourceAssetBucket = new s3.Bucket(this, "SourceAssetBucket", {
+		this.sourceAssetBucket = new s3.Bucket(this, "SourceAssetBucket", {
 			bucketName: `aws-fullstack-template-source-assets-${getRandomInt(
 				1000000
 			)}`,
@@ -46,7 +50,7 @@ export class S3Stack extends cdk.Stack {
 		});
 
 		/* Website Bucket is the target bucket for the react application */
-		const websiteBucket = new s3.Bucket(this, "WebsiteBucket", {
+		this.websiteBucket = new s3.Bucket(this, "WebsiteBucket", {
 			bucketName: `aws-fullstack-template-website-${getRandomInt(1000000)}`,
 			removalPolicy: cdk.RemovalPolicy.DESTROY,
 			websiteIndexDocument: props.websiteIndexDocument,
@@ -54,7 +58,7 @@ export class S3Stack extends cdk.Stack {
 		});
 
 		/* Pipleine Artifacts Bucket is used by CodePipeline during Builds */
-		const pipelineArtifactsBucket = new s3.Bucket(
+		this.pipelineArtifactsBucket = new s3.Bucket(
 			this,
 			"PipelineArtifactsBucket",
 			{
@@ -73,14 +77,14 @@ export class S3Stack extends cdk.Stack {
 			"S3WebsiteDeploy",
 			{
 				sources: [s3deploy.Source.asset("../assets/archive")],
-				destinationBucket: sourceAssetBucket,
+				destinationBucket: this.sourceAssetBucket,
 			}
 		);
 
 		/* Set Website Bucket Allow Policy */
-		websiteBucket.addToResourcePolicy(
+		this.websiteBucket.addToResourcePolicy(
 			new iam.PolicyStatement({
-				resources: [`${websiteBucket.bucketArn}/*`],
+				resources: [`${this.websiteBucket.bucketArn}/*`],
 				actions: ["s3:Get*"],
 				principals: [new iam.AnyPrincipal()],
 			})

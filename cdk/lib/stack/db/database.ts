@@ -15,7 +15,7 @@ import {
 import * as dynamodb from "@aws-cdk/aws-dynamodb";
 
 // Interfaces for DynamoDB
-export interface DatabaseStackProps extends cdk.Stack {
+export interface DatabaseStackProps extends cdk.StackProps {
 	projectName: string;
 	tableName: string;
 }
