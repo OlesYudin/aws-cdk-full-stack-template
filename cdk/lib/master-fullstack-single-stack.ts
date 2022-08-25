@@ -91,55 +91,55 @@ export class MasterFullStackSingleStack extends cdk.Stack {
 		//Todo - grant access to cloudfront user and uncomment block all
 		//#region
 		/* Assets Source Bucket will be used as a codebuild source for the react code */
-		const sourceAssetBucket = new s3.Bucket(this, "SourceAssetBucket", {
-			bucketName: `aws-fullstack-template-source-assets-${getRandomInt(
-				1000000
-			)}`,
-			blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
-			removalPolicy: cdk.RemovalPolicy.DESTROY,
-			versioned: true,
-		});
+		// const sourceAssetBucket = new s3.Bucket(this, "SourceAssetBucket", {
+		// 	bucketName: `aws-fullstack-template-source-assets-${getRandomInt(
+		// 		1000000
+		// 	)}`,
+		// 	blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
+		// 	removalPolicy: cdk.RemovalPolicy.DESTROY,
+		// 	versioned: true,
+		// });
 
-		/* Website Bucket is the target bucket for the react application */
-		const websiteBucket = new s3.Bucket(this, "WebsiteBucket", {
-			bucketName: `aws-fullstack-template-website-${getRandomInt(1000000)}`,
-			removalPolicy: cdk.RemovalPolicy.DESTROY,
-			websiteIndexDocument: this.WebsiteIndexDocument,
-			websiteErrorDocument: this.WebsiteIndexDocument,
-		});
+		// /* Website Bucket is the target bucket for the react application */
+		// const websiteBucket = new s3.Bucket(this, "WebsiteBucket", {
+		// 	bucketName: `aws-fullstack-template-website-${getRandomInt(1000000)}`,
+		// 	removalPolicy: cdk.RemovalPolicy.DESTROY,
+		// 	websiteIndexDocument: this.WebsiteIndexDocument,
+		// 	websiteErrorDocument: this.WebsiteIndexDocument,
+		// });
 
-		/* Pipleine Artifacts Bucket is used by CodePipeline during Builds */
-		const pipelineArtifactsBucket = new s3.Bucket(
-			this,
-			"PipelineArtifactsBucket",
-			{
-				bucketName: `aws-fullstack-template-codepipeline-artifacts-${getRandomInt(
-					1000000
-				)}`,
-				blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
-				removalPolicy: cdk.RemovalPolicy.DESTROY,
-			}
-		);
+		// /* Pipleine Artifacts Bucket is used by CodePipeline during Builds */
+		// const pipelineArtifactsBucket = new s3.Bucket(
+		// 	this,
+		// 	"PipelineArtifactsBucket",
+		// 	{
+		// 		bucketName: `aws-fullstack-template-codepipeline-artifacts-${getRandomInt(
+		// 			1000000
+		// 		)}`,
+		// 		blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
+		// 		removalPolicy: cdk.RemovalPolicy.DESTROY,
+		// 	}
+		// );
 
-		/* S3 Website Deployment */
-		/* Seed the website bucket with the react source */
-		const s3WebsiteDeploy = new s3deploy.BucketDeployment(
-			this,
-			"S3WebsiteDeploy",
-			{
-				sources: [s3deploy.Source.asset("../assets/archive")],
-				destinationBucket: sourceAssetBucket,
-			}
-		);
+		// /* S3 Website Deployment */
+		// /* Seed the website bucket with the react source */
+		// const s3WebsiteDeploy = new s3deploy.BucketDeployment(
+		// 	this,
+		// 	"S3WebsiteDeploy",
+		// 	{
+		// 		sources: [s3deploy.Source.asset("../assets/archive")],
+		// 		destinationBucket: sourceAssetBucket,
+		// 	}
+		// );
 
-		/* Set Website Bucket Allow Policy */
-		websiteBucket.addToResourcePolicy(
-			new iam.PolicyStatement({
-				resources: [`${websiteBucket.bucketArn}/*`],
-				actions: ["s3:Get*"],
-				principals: [new iam.AnyPrincipal()],
-			})
-		);
+		// /* Set Website Bucket Allow Policy */
+		// websiteBucket.addToResourcePolicy(
+		// 	new iam.PolicyStatement({
+		// 		resources: [`${websiteBucket.bucketArn}/*`],
+		// 		actions: ["s3:Get*"],
+		// 		principals: [new iam.AnyPrincipal()],
+		// 	})
+		// );
 		//#endregion
 
 		/* Cloudfront CDN Distribution */

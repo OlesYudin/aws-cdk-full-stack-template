@@ -20,7 +20,7 @@ export interface DatabaseStackProps extends cdk.Stack {
 	TableName: string;
 }
 
-// DynamoDB infrastructure
+// DynamoDB initizlization
 export class DatabaseStack extends cdk.Stack {
 	constructor(scope: cdk.Construct, id: string, props: DatabaseStackProps) {
 		super(scope, id);

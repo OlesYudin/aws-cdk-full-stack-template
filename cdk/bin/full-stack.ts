@@ -1,7 +1,17 @@
 #!/usr/bin/env node
 import "source-map-support/register";
 import * as cdk from "@aws-cdk/core";
-import { MasterFullStackSingleStack } from "../lib/master-fullstack-single-stack";
+import { DatabaseStack } from "../lib/stack/db/database";
+import { S3Stack } from "../lib/stack/s3/s3";
 
 const app = new cdk.App();
-new MasterFullStackSingleStack(app, "FullStackCdkStack");
+
+const props = {
+	ProjectName: "MyCdkGoals",
+	TableName: "CDKGoals",
+	WebsiteIndexDocument: "index.html",
+	WebsiteErrorDocument: "index.html",
+};
+
+const DatabaseAppStack = new DatabaseStack(app, "DatabaseAppStack", props);
+const S3AppStack = new S3Stack(app, "S3AppStack", props);
